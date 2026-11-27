@@ -1,0 +1,31 @@
+buildscript {
+    ext {
+        buildToolsVersion = "37.0.0"
+        minSdkVersion = 24
+        compileSdkVersion = 37
+        targetSdkVersion = 36
+        ndkVersion = "27.1.12297006"
+        kotlinVersion = "2.2.0"
+    }
+    repositories {
+        google()
+        mavenCentral()
+    }
+    dependencies {
+        classpath("com.android.tools.build:gradle")
+        classpath("com.facebook.react:react-native-gradle-plugin")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin")
+    }
+}
+
+apply plugin: "com.facebook.react.rootproject"
+
+// WatermelonDB's Android library reads BuildConfig.DEBUG, but recent Android Gradle
+// Plugin versions no longer generate BuildConfig for libraries by default.
+subprojects { subproject ->
+    if (subproject.name == "nozbe_watermelondb") {
+        subproject.afterEvaluate {
+            subproject.android.buildFeatures.buildConfig = true
+        }
+    }
+}
